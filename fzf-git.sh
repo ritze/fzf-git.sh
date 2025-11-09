@@ -210,7 +210,7 @@ EOF
     ) | sed 's/^/   /'
   ) |
     _fzf_git_fzf -m --ansi --nth 2..,.. \
-      --border-label '📁 Files ' \
+      --border-label '  Files ' \
       --header 'CTRL-O (open in browser) ╱ ALT-E (open in editor)' \
       --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list file $extract_file_name" \
       --bind "alt-e:execute:${EDITOR:-vim} $extract_file_name" \
@@ -227,7 +227,7 @@ _fzf_git_tree_files() {
     git diff-tree --no-commit-id --name-only "$treeish" -r
   done | sort -u |
     _fzf_git_fzf -m \
-      --border-label "📂 Files in $* " \
+      --border-label "  Files in $* " \
       --header 'CTRL-O (open in browser) ╱ ALT-E (open in editor)' \
       --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list file {}" \
       --bind "alt-e:execute:${EDITOR:-vim} {}" \
@@ -242,7 +242,7 @@ _fzf_git_branches() {
 
   bash "$__fzf_git" --list branches |
   __fzf_git_fzf=$(declare -f _fzf_git_fzf) _fzf_git_fzf --ansi \
-    --border-label '🌲 Branches ' \
+    --border-label '  Branches ' \
     --header-lines 2 \
     --tiebreak begin \
     --preview-window down,border-top,40% \
@@ -250,7 +250,7 @@ _fzf_git_branches() {
     --no-hscroll \
     --bind 'ctrl-/:change-preview-window(down,70%|hidden|)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list branch {}" \
-    --bind "alt-a:change-border-label(🌳 All branches)+reload:bash \"$__fzf_git\" --list all-branches" \
+    --bind "alt-a:change-border-label(  All branches)+reload:bash \"$__fzf_git\" --list all-branches" \
     --bind "alt-h:become:LIST_OPTS=\$(cut -c3- <<< {} | cut -d' ' -f1) $shell \"$__fzf_git\" --run hashes" \
     --bind "alt-enter:become:printf '%s\n' {+} | cut -c3- | sed 's@[^/]*/@@'" \
     --preview "git log --oneline --graph --date=short --color=$(__fzf_git_color .) --pretty='format:%C(auto)%cd %h%d %s' \$(cut -c3- <<< {} | cut -d' ' -f1) --" "$@" |
@@ -261,7 +261,7 @@ _fzf_git_tags() {
   _fzf_git_check || return
   git tag --sort -version:refname |
   _fzf_git_fzf --preview-window right,70% \
-    --border-label '📛 Tags ' \
+    --border-label '  Tags ' \
     --header 'CTRL-O (open in browser)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list tag {}" \
     --preview "git show --color=$(__fzf_git_color .) {} | $(__fzf_git_pager)" "$@"
@@ -271,11 +271,11 @@ _fzf_git_hashes() {
   _fzf_git_check || return
   bash "$__fzf_git" --list hashes |
   _fzf_git_fzf --ansi --no-sort --bind 'ctrl-s:toggle-sort' \
-    --border-label '🍡 Hashes ' \
+    --border-label '  Hashes ' \
     --header-lines 2 \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list commit {}" \
     --bind "ctrl-d:execute:grep -o '[a-f0-9]\{7,\}' <<< {} | head -n 1 | xargs git diff --color=$(__fzf_git_color) > /dev/tty" \
-    --bind "alt-a:change-border-label(🍇 All hashes)+reload:bash \"$__fzf_git\" --list all-hashes" \
+    --bind "alt-a:change-border-label(  All hashes)+reload:bash \"$__fzf_git\" --list all-hashes" \
     --bind "alt-f:become:echo ::tree_files;
       awk 'match(\$0, /[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]*/) { print substr(\$0, RSTART, RLENGTH) }' {+f} |
         xargs bash \"$__fzf_git\" --run tree_files" \
@@ -302,7 +302,7 @@ _fzf_git_remotes() {
   _fzf_git_check || return
   git remote -v | awk '{print $1 "\t" $2}' | uniq |
   _fzf_git_fzf --tac \
-    --border-label '📡 Remotes ' \
+    --border-label '  Remotes ' \
     --header 'CTRL-O (open in browser)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list remote {1}" \
     --preview-window right,70% \
@@ -313,7 +313,7 @@ _fzf_git_remotes() {
 _fzf_git_stashes() {
   _fzf_git_check || return
   git stash list | _fzf_git_fzf \
-    --border-label '🥡 Stashes ' \
+    --border-label '  Stashes ' \
     --header 'CTRL-X (drop stash)' \
     --bind 'ctrl-x:reload(git stash drop -q {1}; git stash list)' \
     -d: --preview "git show --first-parent --color=$(__fzf_git_color .) {1} | $(__fzf_git_pager)" "$@" |
@@ -323,7 +323,7 @@ _fzf_git_stashes() {
 _fzf_git_lreflogs() {
   _fzf_git_check || return
   git reflog --color=$(__fzf_git_color) --format="%C(blue)%gD %C(yellow)%h%C(auto)%d %gs" | _fzf_git_fzf --ansi \
-    --border-label '📒 Reflogs ' \
+    --border-label '  Reflogs ' \
     --preview "git show --color=$(__fzf_git_color .) {1} | $(__fzf_git_pager)" "$@" |
   awk '{print $1}'
 }
@@ -333,7 +333,7 @@ _fzf_git_each_ref() {
   bash "$__fzf_git" --list refs | _fzf_git_fzf --ansi \
     --nth 2,2.. \
     --tiebreak begin \
-    --border-label '☘️  Each ref ' \
+    --border-label '  Each ref ' \
     --header-lines 1 \
     --preview-window down,border-top,40% \
     --color hl:underline,hl+:underline \
@@ -341,7 +341,7 @@ _fzf_git_each_ref() {
     --bind 'ctrl-/:change-preview-window(down,70%|hidden|)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list {1} {2}" \
     --bind "alt-e:execute:${EDITOR:-vim} <(git show {2}) < /dev/tty > /dev/tty" \
-    --bind "alt-a:change-border-label(🍀 Every ref)+reload:bash \"$__fzf_git\" --list all-refs" \
+    --bind "alt-a:change-border-label(  Every ref)+reload:bash \"$__fzf_git\" --list all-refs" \
     --preview "git log --oneline --graph --date=short --color=$(__fzf_git_color .) --pretty='format:%C(auto)%cd %h%d %s' {2} --" "$@" |
   awk '{print $2}'
 }
@@ -349,7 +349,7 @@ _fzf_git_each_ref() {
 _fzf_git_worktrees() {
   _fzf_git_check || return
   git worktree list | _fzf_git_fzf \
-    --border-label '🌴 Worktrees ' \
+    --border-label '  Worktrees ' \
     --header 'CTRL-X (remove worktree)' \
     --bind 'ctrl-x:reload(git worktree remove {1} > /dev/null; git worktree list)' \
     --preview "
