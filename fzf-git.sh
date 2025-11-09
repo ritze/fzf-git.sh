@@ -271,11 +271,11 @@ _fzf_git_hashes() {
   _fzf_git_check || return
   bash "$__fzf_git" --list hashes |
   _fzf_git_fzf --ansi --no-sort --bind 'ctrl-s:toggle-sort' \
-    --border-label '  Hashes ' \
+    --border-label '  Log ' \
     --header-lines 2 \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list commit {}" \
     --bind "ctrl-d:execute:grep -o '[a-f0-9]\{7,\}' <<< {} | head -n 1 | xargs git diff --color=$(__fzf_git_color) > /dev/tty" \
-    --bind "alt-a:change-border-label(  All Hashes)+reload:bash \"$__fzf_git\" --list all-hashes" \
+    --bind "alt-a:change-border-label(  Log --all)+reload:bash \"$__fzf_git\" --list all-hashes" \
     --bind "alt-f:become:echo ::tree_files;
       awk 'match(\$0, /[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]*/) { print substr(\$0, RSTART, RLENGTH) }' {+f} |
         xargs bash \"$__fzf_git\" --run tree_files" \
