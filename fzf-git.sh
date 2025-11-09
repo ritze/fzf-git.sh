@@ -250,7 +250,7 @@ _fzf_git_branches() {
     --no-hscroll \
     --bind 'ctrl-/:change-preview-window(down,70%|hidden|)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list branch {}" \
-    --bind "alt-a:change-border-label(  All branches)+reload:bash \"$__fzf_git\" --list all-branches" \
+    --bind "alt-a:change-border-label(  All Branches)+reload:bash \"$__fzf_git\" --list all-branches" \
     --bind "alt-h:become:LIST_OPTS=\$(cut -c3- <<< {} | cut -d' ' -f1) $shell \"$__fzf_git\" --run hashes" \
     --bind "alt-enter:become:printf '%s\n' {+} | cut -c3- | sed 's@[^/]*/@@'" \
     --preview "git log --oneline --graph --date=short --color=$(__fzf_git_color .) --pretty='format:%C(auto)%cd %h%d %s' \$(cut -c3- <<< {} | cut -d' ' -f1) --" "$@" |
@@ -275,7 +275,7 @@ _fzf_git_hashes() {
     --header-lines 2 \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list commit {}" \
     --bind "ctrl-d:execute:grep -o '[a-f0-9]\{7,\}' <<< {} | head -n 1 | xargs git diff --color=$(__fzf_git_color) > /dev/tty" \
-    --bind "alt-a:change-border-label(  All hashes)+reload:bash \"$__fzf_git\" --list all-hashes" \
+    --bind "alt-a:change-border-label(  All Hashes)+reload:bash \"$__fzf_git\" --list all-hashes" \
     --bind "alt-f:become:echo ::tree_files;
       awk 'match(\$0, /[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]*/) { print substr(\$0, RSTART, RLENGTH) }' {+f} |
         xargs bash \"$__fzf_git\" --run tree_files" \
@@ -333,7 +333,7 @@ _fzf_git_each_ref() {
   bash "$__fzf_git" --list refs | _fzf_git_fzf --ansi \
     --nth 2,2.. \
     --tiebreak begin \
-    --border-label '  Each ref ' \
+    --border-label '  Each Ref ' \
     --header-lines 1 \
     --preview-window down,border-top,40% \
     --color hl:underline,hl+:underline \
@@ -341,7 +341,7 @@ _fzf_git_each_ref() {
     --bind 'ctrl-/:change-preview-window(down,70%|hidden|)' \
     --bind "ctrl-o:execute-silent:bash \"$__fzf_git\" --list {1} {2}" \
     --bind "alt-e:execute:${EDITOR:-vim} <(git show {2}) < /dev/tty > /dev/tty" \
-    --bind "alt-a:change-border-label(  Every ref)+reload:bash \"$__fzf_git\" --list all-refs" \
+    --bind "alt-a:change-border-label(  Every Ref)+reload:bash \"$__fzf_git\" --list all-refs" \
     --preview "git log --oneline --graph --date=short --color=$(__fzf_git_color .) --pretty='format:%C(auto)%cd %h%d %s' {2} --" "$@" |
   awk '{print $2}'
 }
